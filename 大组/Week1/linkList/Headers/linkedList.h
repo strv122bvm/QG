@@ -11,6 +11,9 @@
  *
  ***************************************************************************************/
 
+#include <stdio.h>
+#include <stdlib.h>
+
  /**************************************************************
 *	Multi-Include-Prevent Section
 **************************************************************/
@@ -54,7 +57,14 @@ typedef enum Status {
  *	@return		 : Status
  *  @notice      : None
  */
-Status InitList(LinkedList *L);
+Status InitList(LinkedList* L) {
+    *L = (LinkedList)malloc(sizeof(LNode));
+    if (!(*L)) {
+        return ERROR;
+    }
+    (*L)->next = NULL;
+    return SUCCESS;
+}
 
 /**
  *  @name        : void DestroyList(LinkedList *L)
@@ -63,7 +73,14 @@ Status InitList(LinkedList *L);
  *	@return		 : None
  *  @notice      : None
  */
-void DestroyList(LinkedList *L);
+void DestroyList(LinkedList* L) {
+    LinkedList p;
+    while (*L) {
+        p = (*L)->next;
+        free(*L);
+        *L = p;
+    }
+}
 
 /**
  *  @name        : Status InsertList(LNode *p, LNode *q)
@@ -72,7 +89,15 @@ void DestroyList(LinkedList *L);
  *	@return		 : Status
  *  @notice      : None
  */
-Status InsertList(LNode *p, LNode *q);
+Status InsertList(LNode* p, LNode* q) {
+    if (!p || !q) {
+        return ERROR;
+    }
+    q->next = p->next;
+    p->next = q;
+    return SUCCESS;
+}
+
 
 /**
  *  @name        : Status DeleteList(LNode *p, ElemType *e)
@@ -81,7 +106,16 @@ Status InsertList(LNode *p, LNode *q);
  *	@return		 : Status
  *  @notice      : None
  */
-Status DeleteList(LNode *p, ElemType *e);
+Status DeleteList(LNode* p, ElemType* e) {
+    if (!p || !p->next) {
+        return ERROR;
+    }
+    LNode* q = p->next;
+    *e = q->data;
+    p->next = q->next;
+    free(q);
+    return SUCCESS;
+}
 
 /**
  *  @name        : void TraverseList(LinkedList L, void (*visit)(ElemType e))
@@ -90,7 +124,13 @@ Status DeleteList(LNode *p, ElemType *e);
  *	@return		 : None
  *  @notice      : None
  */
-void TraverseList(LinkedList L, void (*visit)(ElemType e));
+void TraverseList(LinkedList L, void (*visit)(ElemType e)) {
+    LNode* p = L->next;
+    while (p) {
+        visit(p->data);
+        p = p->next;
+    }
+}
 
 /**
  *  @name        : Status SearchList(LinkedList L, ElemType e)
@@ -99,7 +139,18 @@ void TraverseList(LinkedList L, void (*visit)(ElemType e));
  *	@return		 : Status
  *  @notice      : None
  */
-Status SearchList(LinkedList L, ElemType e);
+Status SearchList(LinkedList L, ElemType e) {
+    LNode* p = L->next;
+    while (p && p->data != e) {
+        p = p->next;
+    }
+    if (p) {
+        return SUCCESS;
+    }
+    else {
+        return ERROR;
+    }
+}
 
 /**
  *  @name        : Status ReverseList(LinkedList *L)
@@ -108,7 +159,21 @@ Status SearchList(LinkedList L, ElemType e);
  *	@return		 : Status
  *  @notice      : None
  */
-Status ReverseList(LinkedList *L);
+Status ReverseList(LinkedList* L) {
+    if (!(*L) || !(*L)->next) {
+        return ERROR;
+    }
+    LNode* pre = NULL, * cur = (*L)->next, * next = NULL;
+    while (cur) {
+        next = cur->next;
+        cur->next = pre;
+        pre = cur;
+        cur = next;
+    }
+    (*L)->next = pre;
+    return SUCCESS;
+}
+
 
 /**
  *  @name        : Status IsLoopList(LinkedList L)
@@ -117,7 +182,19 @@ Status ReverseList(LinkedList *L);
  *	@return		 : Status
  *  @notice      : None
  */
-Status IsLoopList(LinkedList L);
+Status IsLoopList(LinkedList L) {
+    LNode* slow = L->next;
+    LNode* fast = L->next;
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast) {
+            return SUCCESS;
+        }
+    }
+    return ERROR;
+}
+
 
 /**
  *  @name        : LNode* ReverseEvenList(LinkedList *L)
@@ -126,7 +203,25 @@ Status IsLoopList(LinkedList L);
  *	@return		 : LNode(the new head node)
  *  @notice      : choose to finish
  */
-LNode* ReverseEvenList(LinkedList *L);
+LNode* ReverseEvenList(LinkedList* L) {
+    LNode dummy;
+    dummy.next = *L;
+    LNode* p = &dummy;
+    while (p->next) {
+        LNode* q = p->next;
+        if (q->data % 2 == 0) {
+            p->next = q->next;
+            q->next = dummy.next;
+            dummy.next = q;
+        }
+        else {
+            p = p->next;
+        }
+    }
+    *L = dummy.next;
+    return *L;
+}
+
 
 /**
  *  @name        : LNode* FindMidNode(LinkedList *L)
@@ -135,7 +230,16 @@ LNode* ReverseEvenList(LinkedList *L);
  *	@return		 : LNode
  *  @notice      : choose to finish
  */
-LNode* FindMidNode(LinkedList *L);
+LNode* FindMidNode(LinkedList* L) {
+    LNode* slow = (*L)->next;
+    LNode* fast = (*L)->next;
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;
+}
+
 
  /**************************************************************
 *	End-Multi-Include-Prevent Section
