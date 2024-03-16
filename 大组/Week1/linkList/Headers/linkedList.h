@@ -107,6 +107,7 @@ Status InsertList(LNode* p, LNode* q) {
  *  @notice      : None
  */
 Status DeleteList(LNode* p, ElemType* e) {
+    //p或p->next为NULL返回ERROR
     if (!p || !p->next) {
         return ERROR;
     }
@@ -141,6 +142,7 @@ void TraverseList(LinkedList L, void (*visit)(ElemType e)) {
  */
 Status SearchList(LinkedList L, ElemType e) {
     LNode* p = L->next;
+    //遍历链表直到NULL或要找的值
     while (p && p->data != e) {
         p = p->next;
     }
