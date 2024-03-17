@@ -6,7 +6,7 @@
 2. 上传本地
 3. 线上克隆到本地
 
-[typora.img/image-20240317212010249.png at main · strv122bvm/typora.img (github.com)](https://github.com/strv122bvm/typora.img/blob/main/image-20240317212010249.png)
+![typora.img/image-20240317212010249.png at main · strv122bvm/typora.img (github.com)](https://github.com/strv122bvm/typora.img/blob/main/image-20240317212010249.png)
 
 ## 2. 实时显示更改
 
