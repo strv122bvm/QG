@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>记事本</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>记事本</h1>
+        <div id="note-form">
+            <input type="text" id="note-input" onkeypress="handleKeyPress(event)" placeholder="输入笔记...">
+            <button onclick="addNote()">添加</button>
+        </div>
+        <div id="notes-list"></div>
+        <input type="text" id="search-input" onkeyup="searchNotes()" placeholder="搜索...">
+    </div>
+    <script src="edit.js"></script>
+</body>
+</html>
